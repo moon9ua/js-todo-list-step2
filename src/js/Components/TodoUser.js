@@ -1,4 +1,4 @@
-function TodoUser({ $target, onChangeUser }) {
+function TodoUser({ $target, onChangeUser, onDeleteUser, onCreateUser }) {
   this.setState = (updatedState) => {
     this.state = updatedState;
     this.render();
@@ -8,7 +8,7 @@ function TodoUser({ $target, onChangeUser }) {
     $target.innerHTML = ""; // div 하위가 없어짐.
     this.state.users //
       .map((user) => {
-        if (user === this.state.user) {
+        if (user._id === this.state.user._id) {
           $target.innerHTML += `<button class="ripple active" data-id=${user._id}>${user.name}</button>`;
         } else {
           $target.innerHTML += `<button class="ripple" data-id=${user._id}>${user.name}</button>`;
@@ -26,13 +26,13 @@ function TodoUser({ $target, onChangeUser }) {
   $target.addEventListener("click", (e) => onClickTodoUser(e));
 
   const onClickTodoUser = (event) => {
-    // console.log(event.target);
+    if (!event.target.classList.contains("ripple")) return;
+
     if (event.target.classList.contains("user-delete-button")) {
-      // console.log("delete");
+      onDeleteUser(this.state.user._id, this.state.user.name);
     } else if (event.target.classList.contains("user-create-button")) {
-      // console.log("create");
+      onCreateUser();
     } else {
-      // console.log("none");
       onChangeUser(event.target.getAttribute("data-id"));
     }
   };
