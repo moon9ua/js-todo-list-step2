@@ -25,7 +25,7 @@ function TodoList({ $target, onCheckItem, onEditItem, onDeleteItem }) {
         <option value="1">1순위</option>
         <option value="2">2순위</option>
       </select>
-      "${item.contents}"
+      ${item.contents}
     </label>
     <button class="destroy"></button>
   </div>
@@ -55,13 +55,13 @@ function TodoList({ $target, onCheckItem, onEditItem, onDeleteItem }) {
 
   $target.addEventListener("click", (e) => onClickTodoList(e));
   $target.addEventListener("dblclick", (e) => onDblClickTodoList(e));
-  $target.addEventListener("keyup", (e) => onKeyDownTodoList(e));
+  $target.addEventListener("keyup", (e) => onKeyUpTodoList(e));
   // ❓ 함수 명만 전달하면 안되는데... 더 짧게 할 방법 없나?
 
   const onClickTodoList = (event) => {
     if (event.target.classList.contains("toggle")) {
       const li = event.target.parentNode.parentNode;
-      // ❓ 직접 탐색 말고, 상위로 가면서 태그 검색하는 등의 기능 없나?
+      // ❓ 더 좋은 방법 없나?
       onCheckItem(li.getAttribute("data-id"));
     } else if (event.target.classList.contains("destroy")) {
       const li = event.target.parentNode.parentNode;
@@ -76,7 +76,7 @@ function TodoList({ $target, onCheckItem, onEditItem, onDeleteItem }) {
     }
   };
 
-  const onKeyDownTodoList = (event) => {
+  const onKeyUpTodoList = (event) => {
     if (!event.target.classList.contains("edit")) return;
 
     const li = event.target.parentNode;

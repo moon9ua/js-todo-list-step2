@@ -17,10 +17,6 @@ function TodoApp() {
       // filter: "all",
     };
 
-    this.state.users = await api.getUserList();
-    // ❓ await를 함수 내에서도 써줬는데 여기도 쓴다? 모르겠다...
-    this.state.user = this.state.users[0];
-
     this.todoTitle = new TodoTitle({
       $target: document.querySelector("#user-title"),
     });
@@ -39,9 +35,7 @@ function TodoApp() {
       onDeleteUser: async (userId, userName) => {
         if (confirm(`${userName}을 삭제하시겠습니까?`)) {
           await api.deleteUser(userId);
-          this.state.users = await api.getUserList();
-          this.state.user = this.state.users[0];
-          this.setState(false);
+          this.setState(true);
         }
       },
       onCreateUser: async () => {
@@ -94,18 +88,22 @@ function TodoApp() {
       },
     });
 
-    this.setState();
+    this.setState(true);
   };
 
-  this.fetchState = async () => {
+  this.fetchState = async (getFirstUser = false) => {
     this.state.users = await api.getUserList();
-    this.state.user = await api.getUser(this.state.user._id);
+    // ❓ await를 함수 내에서도 써줬는데 여기도 쓴다? 모르겠다...
+    this.state.user = await api.getUser(
+      getFirstUser ? this.state.users[0]._id : this.state.user._id
+    );
   };
 
-  this.setState = (doFetch = true) => {
-    if (doFetch) {
-      this.fetchState();
-    }
+  this.setState = async (getFirstUser = false) => {
+    // ❓ 가독성이 좋지 않은 것 같은데 함수를 분리하면 중복이 발생한다... 어떻게 표현하면 좋지?
+    await this.fetchState(getFirstUser);
+    // ❓ 역시나 await의 이해가 정확히 되지 않아, 붙여야할지 모르는 중...
+
     this.todoTitle.setState(this.state);
     this.todoUser.setState(this.state);
     this.todoList.setState(this.state);
