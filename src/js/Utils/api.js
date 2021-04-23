@@ -2,7 +2,7 @@ const baseUrl = "https://js-todo-list-9ca3a.df.r.appspot.com";
 
 const request = async (url, option = {}) => {
   const response = await fetch(baseUrl + url, option);
-  // 에러 처리 못했음.
+  // 에러처리 하나도 못함.
   return await response.json();
 };
 

@@ -56,7 +56,6 @@ function TodoList({ $target, onCheckItem, onEditItem, onDeleteItem }) {
   $target.addEventListener("click", (e) => onClickTodoList(e));
   $target.addEventListener("dblclick", (e) => onDblClickTodoList(e));
   $target.addEventListener("keyup", (e) => onKeyUpTodoList(e));
-  // ❓ 함수 명만 전달하면 안되는데... 더 짧게 할 방법 없나?
 
   const onClickTodoList = (event) => {
     if (event.target.classList.contains("toggle")) {
